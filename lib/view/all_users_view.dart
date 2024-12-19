@@ -26,10 +26,10 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0,
-        title: const Text("All Users", style: TextStyle(color: Colors.white)),
+        title: const Text("Friends", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
       ),
       body: Center(
@@ -43,31 +43,34 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                   return const CircularProgressIndicator();
                 }
                 if (userState is GetAllUsersError) {
-                  return const Text('Error fetching users', style: TextStyle(color: Colors.white));
+                  return const Text('Error fetching users',
+                      style: TextStyle(color: Colors.white));
                 }
                 var users = (userState as GetAllUsersLoaded).users;
-                
+
                 return BlocBuilder<GetAllFriendsCubit, GetAllFriendsState>(
                   builder: (context, friendState) {
                     if (friendState is GetAllFriendsLoading) {
                       return const CircularProgressIndicator();
                     }
                     if (friendState is GetAllFriendsError) {
-                      return const Text('Error fetching friends', style: TextStyle(color: Colors.white));
+                      return const Text('Error fetching friends',
+                          style: TextStyle(color: Colors.white));
                     }
                     var friends = (friendState as GetAllFriendsLoaded).friends;
 
                     // Remove current user from list
-                    users.removeWhere(
-                        (user) => user.id == FirebaseAuth.instance.currentUser!.uid);
+                    users.removeWhere((user) =>
+                        user.id == FirebaseAuth.instance.currentUser!.uid);
 
                     return Expanded(
                       child: ListView.builder(
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           var user = users[index];
-                          bool isFriend = friends.any((friend) => friend.friendId == user.id);
-                          
+                          bool isFriend = friends
+                              .any((friend) => friend.friendId == user.id);
+
                           return UserCard(
                             user: user,
                             isFriend: isFriend,
@@ -77,10 +80,12 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                                     .removeFriend(friendId: userId);
                               } else {
                                 BlocProvider.of<FollowUnfollowCubit>(context)
-                                    .addFriend(friend: Friend(
-                                        friendId: userId,
-                                        userId: FirebaseAuth.instance.currentUser!.uid,
-                                        id: Uuid().v1()));
+                                    .addFriend(
+                                        friend: Friend(
+                                            friendId: userId,
+                                            userId: FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            id: Uuid().v1()));
                               }
                             },
                           );
@@ -125,7 +130,8 @@ class UserCard extends StatelessWidget {
             children: [
               // User Image or Default Avatar
               CircleAvatar(
-                backgroundImage: NetworkImage(user.imageUrl ?? 'https://via.placeholder.com/150'),
+                backgroundImage: NetworkImage(
+                    user.imageUrl ?? 'https://via.placeholder.com/150'),
                 radius: 30,
                 backgroundColor: Colors.grey,
               ),
@@ -155,7 +161,8 @@ class UserCard extends StatelessWidget {
                 onPressed: () => onTap(user.id),
                 child: Text(
                   isFriend ? "Remove Friend" : "Add Friend",
-                  style: TextStyle(color: isFriend ? Colors.red : Colors.green),
+                  style:
+                      TextStyle(color: isFriend ? Colors.grey : Colors.green),
                 ),
               )
             ],

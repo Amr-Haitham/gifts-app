@@ -236,6 +236,7 @@ import '../view/events_views/enter_event_view.dart';
 import '../view/events_views/my_events_view.dart';
 import '../view/gift_views/enter_gift_view.dart';
 import '../view/gift_views/gifts_view.dart';
+import '../view/home_skeleton_view.dart';
 import '../view/home_view.dart';
 import '../view/profile_view.dart';
 
@@ -276,73 +277,74 @@ class AppRouter {
                             FirebaseAuth.instance.currentUser!.uid)),
                   ],
                   child: AuthWrapper(
-                    homeScreen: MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                            create: (context) => GetHomeScreenEvents(
-                                  GetHomeScreenEventsUseCase(
-                                    EventsSink(),
-                                    FriendsSink(),
-                                  ),
-                                )),
-                        BlocProvider(
-                            create: (context) => GetAppUserCubit(
-                                  GetAppUserUseCase(
-                                  ),
-                            )),
-                      ],
-                      child: HomeScreen(),
+                    homeScreen: HomeSkeletonView(
+                      home: MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                              create: (context) => GetHomeScreenEvents(
+                                    GetHomeScreenEventsUseCase(
+                                      EventsSink(),
+                                      FriendsSink(),
+                                    ),
+                                  )),
+                          BlocProvider(
+                              create: (context) => GetAppUserCubit(
+                                    GetAppUserUseCase(),
+                                  )),
+                        ],
+                        child: HomeScreen(),
+                      ),
+                      friends: MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                              create: (context) => GetAllUsersCubit(
+                                    GetAllUsersUseCase(),
+                                  )),
+                          BlocProvider(
+                              create: (context) => GetAllFriendsCubit(
+                                    GetAllFriendsUseCase(
+                                      FriendshipSink(),
+                                    ),
+                                  )),
+                          BlocProvider(
+                              create: (context) => FollowUnfollowCubit(
+                                    FollowUnfollowUseCase(
+                                      FriendshipSink(),
+                                    ),
+                                  )),
+                        ],
+                        child: AllUsersScreen(),
+                      ),
+                      profile: BlocProvider(
+                          create: (context) => GetAppUserCubit(
+                                GetAppUserUseCase(),
+                              ),
+                          child: ProfileScreen()),
                     ),
                     signInScreen: BlocProvider(
                         create: (context) => AuthenticationOpCubit(),
                         child: const SignInScreen()),
                   ),
                 ));
-      case Routes.allUsersScreenRoute:
-        return MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                        create: (context) => GetAllUsersCubit(
-                              GetAllUsersUseCase(),
-                            )),
-                    BlocProvider(
-                        create: (context) => GetAllFriendsCubit(
-                              GetAllFriendsUseCase(
-                                FriendshipSink(),
-                              ),
-                            )),
-                    BlocProvider(
-                        create: (context) => FollowUnfollowCubit(
-                              FollowUnfollowUseCase(
-                                FriendshipSink(),
-                              ),
-                            )),
-                  ],
-                  child: AllUsersScreen(),
-                ));
+      // case Routes.allUsersScreenRoute:
+      //   return MaterialPageRoute(
+      //       builder: (context) => );
 
       case Routes.signUpRoute:
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
                   providers: [
                     BlocProvider(create: (context) => AuthenticationOpCubit()),
-                    BlocProvider(create: (context) => SetCustomUserCubit(
-                          SetCustomUserUseCase(
-                            CustomUserSink(),
-                          ),
-                    )),
+                    BlocProvider(
+                        create: (context) => SetCustomUserCubit(
+                              SetCustomUserUseCase(
+                                CustomUserSink(),
+                              ),
+                            )),
                   ],
                   child: const SignUpScreen(),
                 ));
 
-      case Routes.profileScreenRoute:
-        return MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                create: (context) => GetAppUserCubit(
-                      GetAppUserUseCase(),
-                    ),
-                child: ProfileScreen()));
       case Routes.myEventsScreenRoute:
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
@@ -377,11 +379,12 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
                   providers: [
-                    BlocProvider(create: (context) => GetGiftsForEventCubit(
-                          GetGiftsForEventUseCase(
-                            GiftsSink(),
-                          ),
-                    )),
+                    BlocProvider(
+                        create: (context) => GetGiftsForEventCubit(
+                              GetGiftsForEventUseCase(
+                                GiftsSink(),
+                              ),
+                            )),
                     BlocProvider(
                         create: (context) =>
                             DeleteGiftForEventCubit(DeleteGiftForEventUseCase(

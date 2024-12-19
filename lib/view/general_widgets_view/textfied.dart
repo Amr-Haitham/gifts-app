@@ -139,8 +139,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           filled: widget.filled ?? false,
           fillColor: widget.fillColor ?? Colors.transparent,
           border: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: widget.borderColor ?? Colors.grey, width: 0),
+            borderSide:
+                BorderSide(color: widget.borderColor ?? Colors.grey, width: 0),
             borderRadius: BorderRadius.all(
               Radius.circular(widget.borderRadius ?? 12),
             ),
@@ -154,30 +154,29 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                 ),
               ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: widget.borderColor ?? Colors.grey, width: 1),
+            borderSide:
+                BorderSide(color: widget.borderColor ?? Colors.grey, width: 1),
             borderRadius: BorderRadius.all(
               Radius.circular(widget.borderRadius ?? 12),
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderSide:
-                BorderSide(color: widget.errorBorderColor ?? Colors.red),
+                BorderSide(color: widget.errorBorderColor ?? Colors.grey),
             borderRadius: BorderRadius.all(
               Radius.circular(widget.borderRadius ?? 12),
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide:
-                BorderSide(color: widget.errorBorderColor ?? Colors.red),
+                BorderSide(color: widget.errorBorderColor ?? Colors.grey),
             borderRadius: BorderRadius.all(
               Radius.circular(widget.borderRadius ?? 12),
             ),
           ),
           prefix: widget.prefix != null
               ? Padding(
-                  padding:
-                      const EdgeInsets.only(right: 6),
+                  padding: const EdgeInsets.only(right: 6),
                   child: widget.prefix!)
               : const SizedBox(),
           suffix: (widget.isHiddenByDefault == null ||

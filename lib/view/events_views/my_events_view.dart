@@ -131,7 +131,7 @@ class ListButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red.shade50,
+          backgroundColor: Colors.grey.shade50,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -142,20 +142,20 @@ class ListButton extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(color: Colors.red, fontSize: 16),
+              style: const TextStyle(color: Colors.grey, fontSize: 16),
             ),
             const Spacer(),
             IconButton(
               icon: const Icon(
                 Icons.edit,
-                color: Colors.red,
+                color: Colors.grey,
               ),
               onPressed: onEdit,
             ),
             IconButton(
               icon: const Icon(
                 Icons.delete,
-                color: Colors.red,
+                color: Colors.grey,
               ),
               onPressed: onDelete,
             ),
@@ -176,7 +176,7 @@ class AddButton extends StatelessWidget {
       height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),

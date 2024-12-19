@@ -69,7 +69,7 @@ class _PledgedByMeScreenState extends State<PledgedByMeScreen> {
                   subtitle: Text(
                     pledge.gift.name,
                     style: const TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
+                        color: Colors.grey, fontWeight: FontWeight.bold),
                   ),
                 ),
               );

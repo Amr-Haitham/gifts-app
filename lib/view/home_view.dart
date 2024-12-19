@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show File, Platform;
 import 'package:flutter/material.dart';
+import 'package:gifts_app/constants/utils.dart';
 import 'package:gifts_app/controller/custom_users/get_custom_user_controller.dart';
 import 'package:gifts_app/controller/events/get_home_screen_events.dart';
 import 'package:gifts_app/model/classes/custom_user.dart';
@@ -21,10 +24,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    BlocProvider.of<GetHomeScreenEvents>(context)
-        .getHomeScreenEvents();
-    BlocProvider.of<GetAppUserCubit>(context)
-        .getAppUser(uid: FirebaseAuth.instance.currentUser!.uid); // Fetch user data
+    BlocProvider.of<GetHomeScreenEvents>(context).getHomeScreenEvents();
+    BlocProvider.of<GetAppUserCubit>(context).getAppUser(
+        uid: FirebaseAuth.instance.currentUser!.uid); // Fetch user data
     BlocProvider.of<NotificationCubit>(context).startListening();
     super.initState();
   }
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.black,
@@ -50,27 +52,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Text('Error');
               }
               var appUser = (state as GetAppUserLoaded).appUser;
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.profileScreenRoute);
-                },
-                child: Text(
-                  appUser.name,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
+              return Row(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.transparent,
+                    //problem
+                    backgroundImage: AssetImage('assets/images/man.jpeg'),  
+                  ),
+                  Text(
+                    appUser.name,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ],
               );
             },
           ),
-          leading: CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.transparent,
-            //problem
-            backgroundImage: NetworkImage("url"),
-          ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.notifications, color: Colors.red),
+              icon: const Icon(Icons.notifications, color: Colors.grey),
               onPressed: () {
                 Navigator.pushNamed(context, Routes.notificationsScreenRoute);
               },
@@ -78,8 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Center(
-          child: BlocBuilder<GetHomeScreenEvents,
-              GetHomeScreenEventsState>(
+          child: BlocBuilder<GetHomeScreenEvents, GetHomeScreenEventsState>(
             builder: (context, state) {
               if (state is GetHomeScreenEventsLoading ||
                   state is GetHomeScreenEventsInitial) {
@@ -92,6 +92,9 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 20,
+                  ),
                   const SearchBar(),
                   const SizedBox(height: 20),
                   Expanded(
@@ -165,6 +168,14 @@ class _CardListState extends State<CardList> {
     var allData = widget.cardsData.entries.toList();
     allData.removeWhere(
         (element) => element.key.id == FirebaseAuth.instance.currentUser!.uid);
+    if (allData.isEmpty) {
+      return const Center(
+        child: Text(
+          "No Upcoming events to show",
+          style: TextStyle(color: Colors.black),
+        ),
+      );
+    }
     return ListView.separated(
       separatorBuilder: (context, index) => const Divider(
         thickness: 1,
@@ -253,7 +264,8 @@ class _EventCardState extends State<EventCard> {
                       ),
                       Text(
                         widget.name,
-                        style: const TextStyle(fontSize: 16, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                       Text(
                         widget.eventName,
@@ -266,7 +278,7 @@ class _EventCardState extends State<EventCard> {
                     ],
                   ),
                 ),
-                const Icon(Icons.card_giftcard, color: Colors.red, size: 40),
+                const Icon(Icons.card_giftcard, color: Colors.grey, size: 40),
               ],
             ),
           ),

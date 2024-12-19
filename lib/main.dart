@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gifts_app/constants/app_router.dart';
@@ -5,10 +6,11 @@ import 'package:gifts_app/constants/app_router.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // FirebaseAuth.instance.signOut();
 
   runApp(const MyApp());
 }
@@ -21,8 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-     onGenerateRoute: AppRouter().generateRoute,
+      onGenerateRoute: AppRouter().generateRoute,
     );
   }
 }
-

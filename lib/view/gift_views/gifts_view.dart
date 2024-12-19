@@ -12,7 +12,8 @@ class GiftsListScreen extends StatefulWidget {
   final Event event;
   final bool isMyList;
 
-  const GiftsListScreen({Key? key, required this.event, required this.isMyList}) : super(key: key);
+  const GiftsListScreen({Key? key, required this.event, required this.isMyList})
+      : super(key: key);
 
   @override
   State<GiftsListScreen> createState() => _GiftsListScreenState();
@@ -21,7 +22,8 @@ class GiftsListScreen extends StatefulWidget {
 class _GiftsListScreenState extends State<GiftsListScreen> {
   @override
   void initState() {
-    BlocProvider.of<GetGiftsForEventCubit>(context).getGiftsForEvent(eventId: widget.event.id);
+    BlocProvider.of<GetGiftsForEventCubit>(context)
+        .getGiftsForEvent(eventId: widget.event.id);
     super.initState();
   }
 
@@ -32,14 +34,16 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
         BlocListener<DeleteGiftForEventCubit, DeleteGiftForEventState>(
           listener: (context, state) {
             if (state is DeleteGiftForEventLoaded) {
-              BlocProvider.of<GetGiftsForEventCubit>(context).getGiftsForEvent(eventId: widget.event.id);
+              BlocProvider.of<GetGiftsForEventCubit>(context)
+                  .getGiftsForEvent(eventId: widget.event.id);
             }
           },
         ),
         BlocListener<SetGiftForEventCubit, SetGiftForEventState>(
           listener: (context, state) {
             if (state is SetGiftForEventLoaded) {
-              BlocProvider.of<GetGiftsForEventCubit>(context).getGiftsForEvent(eventId: widget.event.id);
+              BlocProvider.of<GetGiftsForEventCubit>(context)
+                  .getGiftsForEvent(eventId: widget.event.id);
             }
           },
         ),
@@ -76,7 +80,8 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   children: [
                     Expanded(
@@ -84,16 +89,19 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: BlocBuilder<GetGiftsForEventCubit, GetGiftsForEventState>(
+                        child: BlocBuilder<GetGiftsForEventCubit,
+                            GetGiftsForEventState>(
                           builder: (context, state) {
                             if (state is GetGiftsForEventLoaded) {
                               return ListView.separated(
                                 itemCount: state.gifts.length,
-                                separatorBuilder: (context, index) => const Divider(
+                                separatorBuilder: (context, index) =>
+                                    const Divider(
                                   color: Colors.white,
                                   thickness: 1,
                                 ),
-                                itemBuilder: (context, index) => GestureDetector(
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
                                   onTap: () {
                                     Navigator.pushNamed(
                                       context,
@@ -101,7 +109,9 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                                       arguments: {
                                         "gift": state.gifts[index],
                                         "eventId": widget.event.id,
-                                        "isMyGift": FirebaseAuth.instance.currentUser!.uid == widget.event.userId
+                                        "isMyGift": FirebaseAuth
+                                                .instance.currentUser!.uid ==
+                                            widget.event.userId
                                       },
                                     );
                                   },
@@ -109,8 +119,10 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                                     title: state.gifts[index].name,
                                     isMyList: widget.isMyList,
                                     onDelete: () {
-                                      BlocProvider.of<DeleteGiftForEventCubit>(context)
-                                          .deleteGiftForEvent(giftId: state.gifts[index].id);
+                                      BlocProvider.of<DeleteGiftForEventCubit>(
+                                              context)
+                                          .deleteGiftForEvent(
+                                              giftId: state.gifts[index].id);
                                     },
                                     onEdit: () {
                                       Navigator.pushNamed(
@@ -119,7 +131,9 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                                         arguments: {
                                           "gift": state.gifts[index],
                                           "eventId": widget.event.id,
-                                          "isMyGift": FirebaseAuth.instance.currentUser!.uid == widget.event.userId
+                                          "isMyGift": FirebaseAuth
+                                                  .instance.currentUser!.uid ==
+                                              widget.event.userId
                                         },
                                       );
                                     },
@@ -129,7 +143,8 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                             } else if (state is GetGiftsForEventError) {
                               return Center(child: Text("Error"));
                             } else {
-                              return const Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             }
                           },
                         ),
@@ -145,7 +160,9 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                                 Routes.setGiftsScreenRoute,
                                 arguments: {
                                   "eventId": widget.event.id,
-                                  "isMyGift": FirebaseAuth.instance.currentUser!.uid == widget.event.userId
+                                  "isMyGift":
+                                      FirebaseAuth.instance.currentUser!.uid ==
+                                          widget.event.userId
                                 },
                               );
                             },
@@ -180,12 +197,12 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: Colors.red.shade50,
+      tileColor: Colors.grey.shade50,
       title: Row(
         children: [
           Text(
             title,
-            style: const TextStyle(color: Colors.red, fontSize: 16),
+            style: const TextStyle(color: Colors.grey, fontSize: 16),
           ),
           const Spacer(),
           !(isMyList)
@@ -193,7 +210,7 @@ class ListItem extends StatelessWidget {
               : IconButton(
                   icon: const Icon(
                     Icons.edit,
-                    color: Colors.red,
+                    color: Colors.grey,
                   ),
                   onPressed: onEdit,
                 ),
@@ -202,7 +219,7 @@ class ListItem extends StatelessWidget {
               : IconButton(
                   icon: const Icon(
                     Icons.delete,
-                    color: Colors.red,
+                    color: Colors.grey,
                   ),
                   onPressed: onDelete,
                 ),
@@ -228,7 +245,7 @@ class AddButton extends StatelessWidget {
       height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),

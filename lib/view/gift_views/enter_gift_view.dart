@@ -143,7 +143,7 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                 decoration: InputDecoration(
                   hintText: "Item name",
                   filled: true,
-                  fillColor: Colors.red.shade50,
+                  fillColor: Colors.grey.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none,
@@ -165,7 +165,7 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                 decoration: InputDecoration(
                   hintText: "Description",
                   filled: true,
-                  fillColor: Colors.red.shade50,
+                  fillColor: Colors.grey.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none,
@@ -187,7 +187,7 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                 decoration: InputDecoration(
                   hintText: "Category",
                   filled: true,
-                  fillColor: Colors.red.shade50,
+                  fillColor: Colors.grey.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none,
@@ -209,7 +209,7 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                 decoration: InputDecoration(
                   hintText: "Price",
                   filled: true,
-                  fillColor: Colors.red.shade50,
+                  fillColor: Colors.grey.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none,
@@ -254,7 +254,8 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                           child: const Text(
                             "Delete",
                             style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                 ],
@@ -289,7 +290,7 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -372,7 +373,7 @@ class PledgeButton extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.grey,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),

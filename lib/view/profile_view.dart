@@ -51,18 +51,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 40),
-                RedButton(
-                    label: "My events",
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.myEventsScreenRoute);
-                    }),
-                const SizedBox(height: 16),
-                RedButton(
-                    label: "pledged by me",
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, Routes.pledgedByMeScreenRoute);
-                    }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    RedButton(
+                        label: "My events",
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, Routes.myEventsScreenRoute);
+                        }),
+                    const SizedBox(height: 16),
+                    RedButton(
+                        label: "pledged by me",
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, Routes.pledgedByMeScreenRoute);
+                        }),
+                  ],
+                )
               ],
             ),
             const Padding(
@@ -114,11 +120,11 @@ class RedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
-      height: 50,
+      height: 150,
+      width: 150,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -126,6 +132,7 @@ class RedButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           label,
+          textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white, fontSize: 16),
         ),
       ),
@@ -142,7 +149,7 @@ class LogoutButton extends StatelessWidget {
       width: 150,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red.shade100,
+          backgroundColor: Colors.grey.shade100,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -154,7 +161,7 @@ class LogoutButton extends StatelessWidget {
         },
         child: const Text(
           "Log out",
-          style: TextStyle(color: Colors.red, fontSize: 16),
+          style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
       ),
     );

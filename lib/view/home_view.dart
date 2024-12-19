@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocListener<NotificationCubit, CustomNotifications.Notification?>(
       listener: (context, notification) {
         if (notification != null) {
+          
           showNotificationDialog(context, notification);
         }
       },
@@ -70,9 +71,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.notifications, color: Colors.white70),
+              icon: const Icon(Icons.logout, color: Colors.white70),
               onPressed: () {
-                Navigator.pushNamed(context, Routes.notificationsScreenRoute);
+                FirebaseAuth.instance.signOut().then((value) =>
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, Routes.authWrapper, (route) => false));
               },
             ),
           ],

@@ -76,10 +76,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: LogoutButton(),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.symmetric(vertical: 20.0),
+            //   child: LogoutButton(),
+            // ),
           ],
         ),
       ),
@@ -148,30 +148,30 @@ class RedButton extends StatelessWidget {
   }
 }
 
-class LogoutButton extends StatelessWidget {
-  const LogoutButton({Key? key}) : super(key: key);
+// class LogoutButton extends StatelessWidget {
+//   const LogoutButton({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey[800],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-        onPressed: () {
-          FirebaseAuth.instance.signOut().then((value) =>
-              Navigator.pushNamedAndRemoveUntil(
-                  context, Routes.authWrapper, (route) => false));
-        },
-        child: const Text(
-          "Log out",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: 150,
+//       child: ElevatedButton(
+//         style: ElevatedButton.styleFrom(
+//           backgroundColor: Colors.grey[800],
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(8.0),
+//           ),
+//         ),
+//         onPressed: () {
+//           FirebaseAuth.instance.signOut().then((value) =>
+//               Navigator.pushNamedAndRemoveUntil(
+//                   context, Routes.authWrapper, (route) => false));
+//         },
+//         child: const Text(
+//           "Log out",
+//           style: TextStyle(color: Colors.white, fontSize: 16),
+//         ),
+//       ),
+//     );
+//   }
+// }

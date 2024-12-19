@@ -26,10 +26,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
+        color: Colors.black,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,9 +46,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         appUser: state.appUser,
                       );
                     } else if (state is GetAppUserError) {
-                      return const Text('Error');
+                      return const Text(
+                        'Error',
+                        style: TextStyle(color: Colors.white),
+                      );
                     }
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(
+                      color: Colors.white,
+                    );
                   },
                 ),
                 const SizedBox(height: 40),
@@ -55,20 +61,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     RedButton(
-                        label: "My events",
+                        label: "My Events",
                         onPressed: () {
                           Navigator.pushNamed(
                               context, Routes.myEventsScreenRoute);
                         }),
-                    const SizedBox(height: 16),
                     RedButton(
-                        label: "pledged by me",
+                        label: "Pledged by Me",
                         onPressed: () {
                           Navigator.pushNamed(
                               context, Routes.pledgedByMeScreenRoute);
                         }),
                   ],
-                )
+                ),
               ],
             ),
             const Padding(
@@ -92,15 +97,18 @@ class ProfileHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 50,
+          radius: 100,
           backgroundColor: Colors.transparent,
-          //problems
-          backgroundImage: NetworkImage("url"), // Replace with your image URL
+          backgroundImage: const AssetImage("assets/images/man.jpeg"),
         ),
         const SizedBox(height: 12),
         Text(
           appUser.name,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
       ],
     );
@@ -124,7 +132,7 @@ class RedButton extends StatelessWidget {
       width: 150,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.grey[800],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -149,7 +157,7 @@ class LogoutButton extends StatelessWidget {
       width: 150,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey.shade100,
+          backgroundColor: Colors.grey[800],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -161,7 +169,7 @@ class LogoutButton extends StatelessWidget {
         },
         child: const Text(
           "Log out",
-          style: TextStyle(color: Colors.grey, fontSize: 16),
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
       ),
     );

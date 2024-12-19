@@ -25,78 +25,86 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.black,
-      appBar: AppBar(
-        elevation: 0,
-        title: const Text("Friends", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
-      ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Users List
-            BlocBuilder<GetAllUsersCubit, GetAllUsersState>(
-              builder: (context, userState) {
-                if (userState is GetAllUsersLoading) {
-                  return const CircularProgressIndicator();
-                }
-                if (userState is GetAllUsersError) {
-                  return const Text('Error fetching users',
-                      style: TextStyle(color: Colors.white));
-                }
-                var users = (userState as GetAllUsersLoaded).users;
+    return BlocListener<FollowUnfollowCubit, FollowUnfollowState>(
+      listener: (context, state) {
+        if (state is FollowUnfollowSuccess) {
+          BlocProvider.of<GetAllFriendsCubit>(context).getAllFriends();
+        }
+      },
+      child: Scaffold(
+        // backgroundColor: Colors.black,
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text("Friends", style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.black,
+        ),
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Users List
+              BlocBuilder<GetAllUsersCubit, GetAllUsersState>(
+                builder: (context, userState) {
+                  if (userState is GetAllUsersLoading) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (userState is GetAllUsersError) {
+                    return const Text('Error fetching users',
+                        style: TextStyle(color: Colors.white));
+                  }
+                  var users = (userState as GetAllUsersLoaded).users;
 
-                return BlocBuilder<GetAllFriendsCubit, GetAllFriendsState>(
-                  builder: (context, friendState) {
-                    if (friendState is GetAllFriendsLoading) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (friendState is GetAllFriendsError) {
-                      return const Text('Error fetching friends',
-                          style: TextStyle(color: Colors.white));
-                    }
-                    var friends = (friendState as GetAllFriendsLoaded).friends;
+                  return BlocBuilder<GetAllFriendsCubit, GetAllFriendsState>(
+                    builder: (context, friendState) {
+                      if (friendState is GetAllFriendsLoading) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (friendState is GetAllFriendsError) {
+                        return const Text('Error fetching friends',
+                            style: TextStyle(color: Colors.white));
+                      }
+                      var friends =
+                          (friendState as GetAllFriendsLoaded).friends;
 
-                    // Remove current user from list
-                    users.removeWhere((user) =>
-                        user.id == FirebaseAuth.instance.currentUser!.uid);
+                      // Remove current user from list
+                      users.removeWhere((user) =>
+                          user.id == FirebaseAuth.instance.currentUser!.uid);
 
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: users.length,
-                        itemBuilder: (context, index) {
-                          var user = users[index];
-                          bool isFriend = friends
-                              .any((friend) => friend.friendId == user.id);
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: users.length,
+                          itemBuilder: (context, index) {
+                            var user = users[index];
+                            bool isFriend = friends
+                                .any((friend) => friend.friendId == user.id);
 
-                          return UserCard(
-                            user: user,
-                            isFriend: isFriend,
-                            onTap: (userId) {
-                              if (isFriend) {
-                                BlocProvider.of<FollowUnfollowCubit>(context)
-                                    .removeFriend(friendId: userId);
-                              } else {
-                                BlocProvider.of<FollowUnfollowCubit>(context)
-                                    .addFriend(
-                                        friend: Friend(
-                                            friendId: userId,
-                                            userId: FirebaseAuth
-                                                .instance.currentUser!.uid,
-                                            id: Uuid().v1()));
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ],
+                            return UserCard(
+                              user: user,
+                              isFriend: isFriend,
+                              onTap: (userId) {
+                                if (isFriend) {
+                                  BlocProvider.of<FollowUnfollowCubit>(context)
+                                      .removeFriend(friendId: userId);
+                                } else {
+                                  BlocProvider.of<FollowUnfollowCubit>(context)
+                                      .addFriend(
+                                          friend: Friend(
+                                              friendId: userId,
+                                              userId: FirebaseAuth
+                                                  .instance.currentUser!.uid,
+                                              id: Uuid().v1()));
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -41,6 +41,7 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
         ),
         BlocListener<SetGiftForEventCubit, SetGiftForEventState>(
           listener: (context, state) {
+            print("workingingigng");
             if (state is SetGiftForEventLoaded) {
               BlocProvider.of<GetGiftsForEventCubit>(context)
                   .getGiftsForEvent(eventId: widget.event.id);
@@ -51,9 +52,9 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.pop(context); // Navigate back to the previous screen
             },
@@ -63,7 +64,7 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
               Text(
                 widget.event.name,
                 style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
               ),
@@ -97,7 +98,7 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                                 itemCount: state.gifts.length,
                                 separatorBuilder: (context, index) =>
                                     const Divider(
-                                  color: Colors.white,
+                                  color: Colors.grey,
                                   thickness: 1,
                                 ),
                                 itemBuilder: (context, index) =>
@@ -141,7 +142,9 @@ class _GiftsListScreenState extends State<GiftsListScreen> {
                                 ),
                               );
                             } else if (state is GetGiftsForEventError) {
-                              return Center(child: Text("Error"));
+                              return const Center(
+                                  child: Text("Error",
+                                      style: TextStyle(color: Colors.white)));
                             } else {
                               return const Center(
                                   child: CircularProgressIndicator());
@@ -197,32 +200,24 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: Colors.grey.shade50,
+      tileColor: Colors.grey.shade800,
       title: Row(
         children: [
           Text(
             title,
-            style: const TextStyle(color: Colors.grey, fontSize: 16),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           const Spacer(),
-          !(isMyList)
-              ? const SizedBox()
-              : IconButton(
-                  icon: const Icon(
-                    Icons.edit,
-                    color: Colors.grey,
-                  ),
-                  onPressed: onEdit,
-                ),
-          !(isMyList)
-              ? const SizedBox()
-              : IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.grey,
-                  ),
-                  onPressed: onDelete,
-                ),
+          if (isMyList)
+            IconButton(
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              onPressed: onEdit,
+            ),
+          if (isMyList)
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: onDelete,
+            ),
         ],
       ),
       trailing: imageUrl != null
@@ -245,7 +240,7 @@ class AddButton extends StatelessWidget {
       height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.blueGrey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),

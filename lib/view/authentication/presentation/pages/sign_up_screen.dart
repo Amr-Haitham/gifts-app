@@ -10,7 +10,6 @@ import 'package:gifts_app/model/classes/custom_user.dart';
 import 'package:intl_phone_number_field/intl_phone_number_field.dart';
 
 import '../../../../constants/app_router.dart';
-import '../../../general_widgets_view/textfied.dart';
 import '../../auth_utility_functions/auth_utility_functions.dart';
 import '../../auth_utility_functions/firebase_auth_services.dart';
 import '../../domain/entities/password_checker.dart';
@@ -30,29 +29,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
-  final TextEditingController phoneNumberController =
-      TextEditingController(); //do not use this controller value when submitting, it doesn't have the country code
-  String phoneNumber =
-      ''; //When submitting, use this variable, not the phoneNumberController, because the controller doesn't have the country code
-
+  final TextEditingController phoneNumberController = TextEditingController();
+  String phoneNumber = '';
   String? selectedCountry;
 
   bool passwordIsValid = false;
   bool passwordMatch = false;
   bool emailIsValid = false;
-  ValueNotifier<String> passwordNotifier =
-      ValueNotifier<String>(""); //value notifier for password updates
-
+  ValueNotifier<String> passwordNotifier = ValueNotifier<String>("");
   bool submitButtonPressed = false;
-
   List<String> countryNames = [];
-
-  // void updatePasswordCheckers() {
-  //   setState(() {
-  //     passwordIsValid =
-  //         AuthInputValidator.validatePassword(passwordController.text);
-  //   });
-  // }
 
   @override
   void initState() {
@@ -60,8 +46,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     passwordController.addListener(() {
       passwordNotifier.value = passwordController.text;
-
-      // updatePasswordCheckers();
     });
 
     super.initState();
@@ -80,6 +64,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return MultiBlocListener(
       listeners: [
         BlocListener<SetCustomUserCubit, SetCustomUserState>(
@@ -87,9 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             if (state is SetCustomUserLoaded) {
               Navigator.pushNamedAndRemoveUntil(context, Routes.authWrapper,
                   ModalRoute.withName(Routes.authWrapper));
-            } else if (state is SetCustomUserLoading ||
-                state is SetCustomUserInitial) {
-              showErrorSnackBar(context, "Adding user");
             } else {
               showErrorSnackBar(context, "Error adding user");
             }
@@ -99,139 +82,105 @@ class _SignUpScreenState extends State<SignUpScreen> {
           listener: (context, state) {
             if (state is AuthenticationOpLoaded) {
               BlocProvider.of<SetCustomUserCubit>(context).setCustomUser(
-                  CustomUser(
-                      imageUrl: "adsfa",
-                      id: state.userCredential.user!.uid,
-                      joinDate: DateTime.now(),
-                      name: nameController.text,
-                      email: state.userCredential.user!.email!,
-                      phoneNumber: phoneNumber,
-                      fcmToken: null));
-
-              //Raslan moved nvigator here to navigate only when adding user
-            } else if (state is SetCustomUserError) {
-              //Raslan error handling for error in adding user
-            } else {
-              //Raslan loading handling
+                CustomUser(
+                  imageUrl: "default_image_url",
+                  id: state.userCredential.user!.uid,
+                  joinDate: DateTime.now(),
+                  name: nameController.text,
+                  email: state.userCredential.user!.email!,
+                  phoneNumber: phoneNumber,
+                  fcmToken: null,
+                ),
+              );
             }
           },
         ),
       ],
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Padding(
           padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Form(
               key: _signUpFormKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
+                  const SizedBox(height: 30),
+                  Text(
+                    "Create account",
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your full name',
+                      filled: true,
+                      fillColor: theme.colorScheme.surface,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please enter your name'
+                        : null,
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your email',
+                      filled: true,
+                      fillColor: theme.colorScheme.surface,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    validator: (value) => (value != null && value.contains('@'))
+                        ? null
+                        : 'Invalid email',
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: theme.colorScheme.surface,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      suffixIcon: Icon(Icons.remove_red_eye),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (_signUpFormKey.currentState?.validate() ?? false) {
+                        await handleSignUpRequest(context);
+                      }
+                    },
+                    child: const Text('Sign Up'),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 30,
+                      const Text(
+                        "Already have an account? ",
+                        style: TextStyle(fontSize: 16),
                       ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Create account",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: TextFieldWidget(
-                          labelText: 'Enter your full name',
-                          textController: nameController,
-                          validator: (value) => (nameController.text.isEmpty)
-                              ? 'Please enter your name'
-                              : null,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: TextFieldWidget(
-                          labelText: 'Enter your email',
-                          //S.of(context).email,
-                          textController: emailController,
-                          // validator: (value) =>
-                          //     AuthInputValidator.validateEmail(
-                          //             emailController.text)
-                          //         ? null
-                          //         : 'invalid email',
-                        ),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 8),
-                      //   child: phoneNumberWidget(),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: TextFieldWidget(
-                          labelText: 'password',
-                          isHiddenByDefault: true,
-                          textController: passwordController,
-                          suffix: const Icon(
-                            Icons.remove_red_eye,
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              // validatePassword(passwordController.text);
-                            });
-                          },
-                        ),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 8),
-                      //   child: listOfPasswordCheckers(),
-                      // ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_signUpFormKey.currentState?.validate() ??
-                              false) {}
-
-                          // AuthUtilityFunctions.validatePassword(passwordController.text);
-                          await handleSignUpRequest(context);
-                          // signUp(email: emailController.text, password: passwordController.text, context: context);
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(Routes.authWrapper);
                         },
-                        child: Text('Sign Up'),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: signInInsteadButton(context, () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Routes.authWrapper);
-                            }),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
+                        child: const Text("Login"),
                       ),
                     ],
                   ),
@@ -244,104 +193,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget signInInsteadButton(BuildContext context, Function() onTap) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-          "Already have an account? ",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        ElevatedButton(child: Text("Login"), onPressed: onTap),
-      ],
-    );
-  }
-
   Future<User?> handleSignUpRequest(BuildContext context) async {
     setState(() {
       submitButtonPressed = true;
-      passwordIsValid = true;
-      emailIsValid = true;
     });
-    if (!emailIsValid) {
-      showErrorSnackBar(context, "Email is invalid");
-    } else if (!passwordIsValid) {
-      showErrorSnackBar(context, "Password is invalid");
-    } else {
-      BlocProvider.of<AuthenticationOpCubit>(context)
-          .createAccountWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text);
-    }
-    return null;
-  }
 
-  Widget phoneNumberWidget() {
-    return InternationalPhoneNumberInput(
-      height: 60,
-      controller: phoneNumberController,
-      inputFormatters: const [],
-      formatter: MaskedInputFormatter('##########'),
-      initCountry:
-          CountryCodeModel(name: "Egypt", dial_code: "+20", code: "EG"),
-      betweenPadding: 23,
-      onInputChanged: (phone) {
-        phoneNumber = "${phone.dial_code}${phone.rawNumber}";
-      },
-      dialogConfig: DialogConfig(
-        backgroundColor: Colors.white,
-        searchBoxBackgroundColor: Colors.grey,
-        searchBoxIconColor: Colors.black,
-        countryItemHeight: 55,
-        topBarColor: Colors.black,
-        selectedItemColor: Colors.grey,
-        selectedIcon: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Image.asset(
-            "assets/check.png",
-            width: 20,
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        textStyle: const TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
-        searchBoxTextStyle: const TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
-        titleStyle: const TextStyle(
-            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
-        searchBoxHintStyle: const TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
-      ),
-      countryConfig: CountryConfig(
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1,
-              color: Colors.grey,
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          noFlag: false,
-          textStyle: const TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
-      phoneConfig: PhoneConfig(
-        focusedColor: Colors.black,
-        enabledColor: Colors.grey,
-
-        focusNode: null,
-        radius: 12,
-        hintText: "Phone Number",
-        borderWidth: 1,
-        backgroundColor: Colors.transparent,
-        decoration: null,
-        //  popUpErrorText: true,
-        autoFocus: false,
-        showCursor: true,
-        hintStyle: const TextStyle(
-            color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-      ),
+    // if (!emailIsValid) {
+    //   showErrorSnackBar(context, "Email is invalid");
+    // } else if (!passwordIsValid) {
+    //   showErrorSnackBar(context, "Password is invalid");
+    // } else {
+    BlocProvider.of<AuthenticationOpCubit>(context)
+        .createAccountWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
     );
+    // }
+    return null;
   }
 }

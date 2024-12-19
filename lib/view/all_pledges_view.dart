@@ -20,27 +20,38 @@ class _PledgedByMeScreenState extends State<PledgedByMeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pledged by me'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        title: const Text(
+          'Pledged by Me',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
         elevation: 0,
       ),
+      backgroundColor: Colors.black,
       body: BlocBuilder<UserPledgesCubit, UserPledgesState>(
         builder: (context, state) {
           if (state is UserPledgesLoading || state is UserPledgesInitial) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
             );
           } else if (state is UserPledgesError) {
             return const Center(
-              child: Text('Error'),
+              child: Text(
+                'Error',
+                style: TextStyle(color: Colors.white),
+              ),
             );
           }
 
           final pledges = (state as UserPledgesSuccess).pledges;
           if (pledges.isEmpty) {
             return const Center(
-              child: Text('No pledges'),
+              child: Text(
+                'No Pledges',
+                style: TextStyle(color: Colors.white),
+              ),
             );
           }
 
@@ -52,7 +63,7 @@ class _PledgedByMeScreenState extends State<PledgedByMeScreen> {
               return Card(
                 margin: const EdgeInsets.only(bottom: 16.0),
                 elevation: 0,
-                color: const Color(0xFFFFF5F5),
+                color: Colors.grey[850],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
@@ -64,12 +75,17 @@ class _PledgedByMeScreenState extends State<PledgedByMeScreen> {
                   ),
                   title: Text(
                     pledge.giftOwner.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   subtitle: Text(
                     pledge.gift.name,
                     style: const TextStyle(
-                        color: Colors.grey, fontWeight: FontWeight.bold),
+                      color: Colors.white70,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               );

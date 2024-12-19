@@ -29,22 +29,38 @@ class _HomeSkeletonViewState extends State<HomeSkeletonView> {
       body: Center(
         child: _screens[_selectedIndex],
       ),
-      bottomNavigationBar: GNav(
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16),
+        child: GNav(
           gap: 8,
-          padding: EdgeInsets.all(16),
-          backgroundColor: Colors.blueGrey,
-          tabBackgroundColor: Colors.white,
-          activeColor: Colors.grey.shade900,
+          padding: const EdgeInsets.all(16),
+          // backgroundColor: , // Dark background for the navbar
+          tabBackgroundColor:
+              Colors.grey[800]!, // Slightly lighter for active tabs
+          activeColor: Colors.white, // Active icon and text color
+          color: Colors.grey[400], // Inactive icon and text color
           onTabChange: (value) {
             setState(() {
               _selectedIndex = value;
             });
           },
           tabs: const [
-            GButton(icon: Icons.home, text: 'Home'),
-            GButton(icon: Icons.search, text: 'Profile'),
-            GButton(icon: Icons.person, text: 'Friends'),
-          ]),
+            GButton(
+              icon: Icons.home,
+              text: 'Home',
+            ),
+            GButton(
+              icon: Icons.person,
+              text: 'Profile',
+            ),
+            GButton(
+              icon: Icons.group,
+              text: 'Friends',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

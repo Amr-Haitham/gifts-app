@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:io' show File, Platform;
-import 'package:flutter/material.dart';
 import 'package:gifts_app/constants/utils.dart';
 import 'package:gifts_app/controller/custom_users/get_custom_user_controller.dart';
 import 'package:gifts_app/controller/events/get_home_screen_events.dart';
@@ -40,10 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.grey[900],
           title: BlocBuilder<GetAppUserCubit, GetAppUserState>(
             builder: (context, state) {
               if (state is GetAppUserLoading) {
@@ -55,14 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
               return Row(
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 30,
                     backgroundColor: Colors.transparent,
-                    //problem
-                    backgroundImage: AssetImage('assets/images/man.jpeg'),  
+                    backgroundImage: AssetImage('assets/images/man.jpeg'),
                   ),
+                  const SizedBox(width: 10),
                   Text(
                     appUser.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.notifications, color: Colors.grey),
+              icon: const Icon(Icons.notifications, color: Colors.white70),
               onPressed: () {
                 Navigator.pushNamed(context, Routes.notificationsScreenRoute);
               },
@@ -83,18 +82,17 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, state) {
               if (state is GetHomeScreenEventsLoading ||
                   state is GetHomeScreenEventsInitial) {
-                return const CircularProgressIndicator();
+                return const CircularProgressIndicator(color: Colors.white);
               }
               if (state is GetHomeScreenEventsError) {
-                return const Text('Error');
+                return const Text('Error',
+                    style: TextStyle(color: Colors.white));
               }
               var loadedState = state as GetHomeScreenEventsLoaded;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const SearchBar(),
                   const SizedBox(height: 20),
                   Expanded(
@@ -106,19 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const SizedBox(width: 16),
-            FloatingActionButton(
-              onPressed: () {
-                // Handle add event button press
-                Navigator.pushNamed(context, Routes.allUsersScreenRoute);
-              },
-              child: const Icon(Icons.contacts),
-            ),
-          ],
         ),
       ),
     );
@@ -140,14 +125,16 @@ class _SearchBarState extends State<SearchBar> {
       child: TextField(
         decoration: InputDecoration(
           hintText: "Search by name or email",
+          hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: const Icon(Icons.search, color: Colors.white70),
           filled: true,
-          fillColor: Colors.black87,
+          fillColor: Colors.grey[800],
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
             borderSide: BorderSide.none,
           ),
         ),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
@@ -172,7 +159,7 @@ class _CardListState extends State<CardList> {
       return const Center(
         child: Text(
           "No Upcoming events to show",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       );
     }
@@ -233,7 +220,7 @@ class _EventCardState extends State<EventCard> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          color: Colors.grey[800],
+          color: Colors.grey[850],
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -278,7 +265,8 @@ class _EventCardState extends State<EventCard> {
                     ],
                   ),
                 ),
-                const Icon(Icons.card_giftcard, color: Colors.grey, size: 40),
+                // const Icon(Icons.card_giftcard,
+                //     color: Colors.white70, size: 40),
               ],
             ),
           ),

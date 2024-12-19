@@ -40,9 +40,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.pop(context); // Navigate back to the previous screen
             },
@@ -50,7 +50,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
           title: const Text(
             "My events",
             style: TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -61,15 +61,21 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               child: BlocBuilder<GetUserEventsCubit, GetUserEventsState>(
                 builder: (context, state) {
                   if (state is GetUserEventsError) {
-                    return Text("error");
+                    return const Center(
+                      child:
+                          Text("Error", style: TextStyle(color: Colors.white)),
+                    );
                   } else if (state is GetUserEventsLoaded) {
                     if (state.events.isEmpty) {
-                      return const Center(child: Text("No events yet"));
+                      return const Center(
+                        child: Text("No events yet",
+                            style: TextStyle(color: Colors.white)),
+                      );
                     }
 
                     return ListView.separated(
                       separatorBuilder: (context, index) =>
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                       padding: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 20),
                       itemCount: state.events.length,
@@ -131,7 +137,7 @@ class ListButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey.shade50,
+          backgroundColor: Colors.grey[850],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -142,21 +148,15 @@ class ListButton extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(color: Colors.grey, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
             const Spacer(),
             IconButton(
-              icon: const Icon(
-                Icons.edit,
-                color: Colors.grey,
-              ),
+              icon: const Icon(Icons.edit, color: Colors.white70),
               onPressed: onEdit,
             ),
             IconButton(
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.grey,
-              ),
+              icon: const Icon(Icons.delete, color: Colors.red),
               onPressed: onDelete,
             ),
           ],
@@ -176,7 +176,7 @@ class AddButton extends StatelessWidget {
       height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.blueGrey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),

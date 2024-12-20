@@ -292,7 +292,9 @@ class AppRouter {
                                     GetAppUserUseCase(),
                                   )),
                         ],
-                        child: HomeScreen(),
+                        child: HomeScreen(
+                          
+                        ),
                       ),
                       friends: MultiBlocProvider(
                         providers: [

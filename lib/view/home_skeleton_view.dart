@@ -61,6 +61,7 @@ class _HomeSkeletonViewState extends State<HomeSkeletonView> {
           },
           tabs: const [
             GButton(
+              key: Key("homeButtonTestKey"),
               icon: Icons.home,
               text: 'Home',
             ),
@@ -69,6 +70,7 @@ class _HomeSkeletonViewState extends State<HomeSkeletonView> {
             //   text: 'Profile',
             // ),
             GButton(
+              key:Key("friendsButtonTestKey"), 
               icon: Icons.group,
               text: 'Friends',
             ),

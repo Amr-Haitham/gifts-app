@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.logout, color: Colors.white70),
+                icon: const Icon(key:Key("logoutIcon"),Icons.logout, color: Colors.white70),
                 onPressed: () {
                   FirebaseAuth.instance.signOut().then((value) =>
                       Navigator.pushNamedAndRemoveUntil(
@@ -127,9 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 20),
                         SearchBar(
                           onSearch: (searchValue) {
-                            print(searchValue);
                             friendToEvent = loadedState.friendToEvent;
-                            print(loadedState.friendToEvent.length);
                             friendToEvent = Map<CustomUser, Event>.fromEntries(
                               friendToEvent.entries
                                   .where((entry) => entry.key.name
@@ -223,6 +221,7 @@ class _CardListState extends State<CardList> {
       itemBuilder: (context, index) {
         final cardData = allData.elementAt(index);
         return EventCard(
+          key: Key("EventCardTestKeyHomeScreen"),
           onTap: () {
             Navigator.pushNamed(context, Routes.giftsListScreenRoute,
                 arguments: cardData.value);

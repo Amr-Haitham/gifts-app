@@ -22,6 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      key: Key("profileDrawerTestKey"),
       child: ListView(children: [
         const SizedBox(height: 20),
         BlocBuilder<GetAppUserCubit, GetAppUserState>(
@@ -46,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
         ListTile(
+          key: Key("myEventsListTileKey"),
           trailing: Icon(Icons.arrow_right, color: Colors.white),
           title: const Text('My Events'),
           onTap: () {

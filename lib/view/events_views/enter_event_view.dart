@@ -63,6 +63,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
           child: Column(
             children: [
               TextFormField(
+                key: Key("eventNameTestKey"),
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Event Name'),
                 validator: (value) {
@@ -74,6 +75,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
               ),
               const SizedBox(height: 10),
               DatePickerFieldWidget(
+               
                 label: "Enter event date",
                 onDateSelected: (selectedDate) {
                   this.selectedDate = selectedDate;

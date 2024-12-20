@@ -167,6 +167,7 @@ class ListButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
+                  key: Key("EditButtonTestKey"),
                   icon: const Icon(Icons.edit, color: Colors.white70),
                   onPressed: onEdit,
                 ),

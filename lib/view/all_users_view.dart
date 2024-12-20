@@ -126,55 +126,60 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Card(
-        color: Colors.grey[800],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              // User Image or Default Avatar
-              CircleAvatar(
-                backgroundImage: AssetImage(
-                    user.imageUrl ?? 'https://via.placeholder.com/150'),
-                radius: 30,
-                backgroundColor: Colors.grey,
-              ),
-              const SizedBox(width: 16.0),
-              // User Info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+    return GestureDetector(
+      onTap: () => onTap(user.id),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Card(
+          color: Colors.grey[800],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                // User Image or Default Avatar
+                CircleAvatar(
+                  backgroundImage: AssetImage(
+                      user.imageUrl ?? 'https://via.placeholder.com/150'),
+                  radius: 30,
+                  backgroundColor: Colors.grey,
+                ),
+                const SizedBox(width: 16.0),
+                // User Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    Text(
-                      user.phoneNumber,
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                  ],
+                      Text(
+                        user.phoneNumber,
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              // Add/Remove Friend Button
-              TextButton(
-                onPressed: () => onTap(user.id),
-                child: Text(
-                  isFriend ? "Remove Friend" : "Add Friend",
-                  style:
-                      TextStyle(color: isFriend ? Colors.grey : Colors.green),
-                ),
-              )
-            ],
+                // Add/Remove Friend Button
+                TextButton(
+                  key: Key("AddRemoveFriendButtonTestKey"),
+                  onPressed: () {},
+                  child: Text(
+                    isFriend ? "Remove Friend" : "Add Friend",
+                    style:
+                        TextStyle(color: isFriend ? Colors.grey : Colors.green),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

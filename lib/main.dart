@@ -12,13 +12,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // FirebaseAuth.instance.signOut();
-  // generateLocalDbData();
-  FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: 'amrofficialacc@gmail.com', password: '123456');
-  // await FirebaseAuth.instance.signOut();
-  // await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //     email: 'G5MfE@example.com', password: '12345678');
+  // FirebaseAuth.instance.signInWithEmailAndPassword(
+  //     email: 'amrofficialacc@gmail.com', password: '123456');
   
   runApp(BlocProvider(
     create: (context) => UpdateFcmTokenForAppUserCubit(),

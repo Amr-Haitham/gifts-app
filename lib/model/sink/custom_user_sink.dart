@@ -14,11 +14,10 @@ class CustomUserSink {
   }
 
   Future<CustomUser> getSingleCustomUser(String uid) async {
-    DocumentSnapshot snapshot =
-        await _firebaseFirestore
-            .collection(FirestoreCollectionNames.usersCollection)
-            .doc(uid)
-            .get();
+    DocumentSnapshot snapshot = await _firebaseFirestore
+        .collection(FirestoreCollectionNames.usersCollection)
+        .doc(uid)
+        .get();
 
     return CustomUser.fromJson(snapshot.data() as Map<String, dynamic>);
   }
@@ -52,4 +51,11 @@ class CustomUserSink {
     return users;
   }
 
+  updateFcmTokenForSingleAppUser(
+      {required String uid, required String fcmToken}) {
+    return _firebaseFirestore
+        .collection(FirestoreCollectionNames.usersCollection)
+        .doc(uid)
+        .update({"fcmToken": fcmToken});
+  }
 }

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import '../../model/classes/friend.dart';
 import '../../model/sink/friendship_sink.dart';
-
 
 class FollowUnfollowUseCase {
   final FriendshipSink _friendshipSink;
@@ -19,7 +19,8 @@ class FollowUnfollowUseCase {
 
   Future<void> removeFriend(String friendId) async {
     try {
-      List<Friend> friends = await _friendshipSink.getAllFriends();
+      List<Friend> friends = await _friendshipSink.getAllFriends(
+          uid: FirebaseAuth.instance.currentUser!.uid);
       Friend friend = friends.firstWhere((f) => f.friendId == friendId);
       await _friendshipSink.removeFriend(id: friend.id);
     } catch (e) {
@@ -31,7 +32,8 @@ class FollowUnfollowUseCase {
 class FollowUnfollowCubit extends Cubit<FollowUnfollowState> {
   final FollowUnfollowUseCase _followUnfollowUseCase;
 
-  FollowUnfollowCubit(this._followUnfollowUseCase) : super(FollowUnfollowInitial());
+  FollowUnfollowCubit(this._followUnfollowUseCase)
+      : super(FollowUnfollowInitial());
 
   void addFriend({required Friend friend}) async {
     emit(FollowUnfollowLoading());

@@ -26,4 +26,6 @@ class CustomUser {
 
   factory CustomUser.fromJson(Map<String, dynamic> json) =>
       _$CustomUserFromJson(json);
+
+  toLowerCase() {}
 }

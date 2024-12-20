@@ -73,9 +73,13 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                       );
                     }
 
-                    return ListView.separated(
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 16),
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                      ),
                       padding: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 20),
                       itemCount: state.events.length,
@@ -105,11 +109,18 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 },
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: AddButton(),
-            ),
           ],
+        ),
+        floatingActionButton: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.eventFormScreenRoute);
+              },
+              icon: Icon(
+                Icons.add,
+                size: 60,
+              )),
         ),
       ),
     );
@@ -144,21 +155,27 @@ class ListButton extends StatelessWidget {
           elevation: 0,
         ),
         onPressed: onPressed,
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
               label,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 24),
             ),
-            const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.edit, color: Colors.white70),
-              onPressed: onEdit,
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: onDelete,
-            ),
+            // const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.white70),
+                  onPressed: onEdit,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: onDelete,
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -166,29 +183,29 @@ class ListButton extends StatelessWidget {
   }
 }
 
-class AddButton extends StatelessWidget {
-  const AddButton({Key? key}) : super(key: key);
+// class AddButton extends StatelessWidget {
+//   const AddButton({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      height: 40,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blueGrey,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, Routes.eventFormScreenRoute);
-        },
-        child: const Text(
-          "Add",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: 100,
+//       height: 40,
+//       child: ElevatedButton(
+//         style: ElevatedButton.styleFrom(
+//           backgroundColor: Colors.blueGrey,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(8.0),
+//           ),
+//         ),
+//         onPressed: () {
+//           Navigator.pushNamed(context, Routes.eventFormScreenRoute);
+//         },
+//         child: const Text(
+//           "Add",
+//           style: TextStyle(color: Colors.white, fontSize: 16),
+//         ),
+//       ),
+//     );
+//   }
+// }

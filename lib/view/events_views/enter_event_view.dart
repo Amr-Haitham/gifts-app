@@ -46,7 +46,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
       );
       BlocProvider.of<SetEventCubit>(context).setEvent(newEvent);
 
-      Navigator.pop(context, newEvent); // Returns the Event object.
+      Navigator.pop(context); // Returns the Event object.
     }
   }
 

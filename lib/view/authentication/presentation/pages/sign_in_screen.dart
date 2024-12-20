@@ -66,6 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
+                        key: Key('emailFieldTestKey'),
                         controller: emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -81,6 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
+                        key: Key('passwordFieldTestKey'),
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
@@ -104,6 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Column(
                   children: [
                     ElevatedButton(
+                      key: Key('signInButtonTestKey'),
                       onPressed: () {
                         if (_signInFormKey.currentState?.validate() ?? false) {
                           BlocProvider.of<AuthenticationOpCubit>(context)
@@ -129,6 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Padding(
                           padding: const EdgeInsets.all(20),
                           child: ElevatedButton(
+                            key: Key('signUpButtonInSignInTestKey'),
                             onPressed: () {
                               Navigator.of(context)
                                   .pushReplacementNamed(Routes.signUpRoute);

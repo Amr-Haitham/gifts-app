@@ -43,10 +43,11 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GetPledgeStatusForGiftCubit>(context)
-        .getPledgeStatusForGift(
-            giftId: widget.gift!.id, eventId: widget.eventId);
     if (widget.gift != null) {
+      BlocProvider.of<GetPledgeStatusForGiftCubit>(context)
+          .getPledgeStatusForGift(
+              giftId: widget.gift!.id, eventId: widget.eventId);
+
       _giftNameController.text = widget.gift!.name;
       _giftDescriptionController.text = widget.gift!.description;
       _giftCategoryController.text = widget.gift!.category;
@@ -98,11 +99,10 @@ class _GiftFormScreenState extends State<GiftFormScreen> {
                   ? "Add Gift"
                   : "Edit Gift"
               : "View Gift",
-          style: theme.textTheme.headlineMedium
-              ?.copyWith(color: theme.colorScheme.onPrimary),
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

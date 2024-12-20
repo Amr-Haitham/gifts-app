@@ -18,8 +18,8 @@ class CommitmentUseCase {
       userId: pledge.giftOwnerId,
       notification: Notification(
         id: const Uuid().v4(),
-        title: 'New Commitment!',
-        body: 'You have a new commitment',
+        title: 'New Pledge!',
+        body: 'You have a new pledge id: ${pledge.userId}',
         createdAt: DateTime.now(),
       ),
     );

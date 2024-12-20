@@ -21,9 +21,10 @@ class FriendshipSink {
         .set(friend.toJson());
   }
 
-  Future<List<Friend>> getAllFriends() async {
+  Future<List<Friend>> getAllFriends({required String uid}) async {
     QuerySnapshot snapshot = await _firestore
         .collection(FirestoreCollectionNames.friendsCollection)
+        .where('userId', isEqualTo: uid)
         .get();
     List<Friend> friends = [];
     for (var doc in snapshot.docs) {

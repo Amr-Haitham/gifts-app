@@ -188,8 +188,6 @@
 //                   create: (context) => GetMyPledgesCubit(),
 //                   child: PledgedByMeScreen(),
 //                 ));
-//       case Routes.notificationsScreenRoute:
-//         return MaterialPageRoute(builder: (context) => NotificationScreen());
 
 //       // default:
 //       //   return MaterialPageRoute(builder: (context) => initialRoute);
@@ -220,7 +218,8 @@ import '../controller/friends/get_all_friends_controller.dart';
 import '../controller/gifts/delete_gift_conroller.dart';
 import '../controller/gifts/get_gifts_in_events_conroller.dart';
 import '../controller/gifts/set_gift_controller.dart';
-import '../controller/notifications/notification_cubit.dart';
+import '../controller/notifications/notification_cubit_controller.dart';
+import '../controller/notifications/notificatoin_local_db_controller.dart';
 import '../controller/pledges/get_pledge_status_controller.dart';
 import '../model/classes/event.dart';
 import '../model/sink/friendship_sink.dart';
@@ -238,12 +237,13 @@ import '../view/gift_views/enter_gift_view.dart';
 import '../view/gift_views/gifts_view.dart';
 import '../view/home_skeleton_view.dart';
 import '../view/home_view.dart';
+import '../view/notification_view.dart';
 import '../view/profile_view.dart';
 
 class Routes {
   static const String authWrapper = "/";
   static const String signUpRoute = 'sign_up_screen_route';
-  static const String profileScreenRoute = 'profile_screen_route';
+  // static const String profileScreenRoute = 'profile_screen_route';
   static const String giftsListScreenRoute = 'gifts_list_screen_route';
   static const String eventFormScreenRoute = 'event_form_screen_route';
   static const String myEventsScreenRoute = 'my_events_screen_route';
@@ -274,7 +274,7 @@ class AppRouter {
                     BlocProvider(create: (context) => AuthenticationCubit()),
                     BlocProvider(
                         create: (context) => NotificationCubit(
-                            FirebaseAuth.instance.currentUser!.uid)),
+                            )),
                   ],
                   child: AuthWrapper(
                     homeScreen: HomeSkeletonView(
@@ -315,7 +315,7 @@ class AppRouter {
                         ],
                         child: AllUsersScreen(),
                       ),
-                      profile: BlocProvider(
+                      profileDrawer: BlocProvider(
                           create: (context) => GetAppUserCubit(
                                 GetAppUserUseCase(),
                               ),
@@ -330,6 +330,16 @@ class AppRouter {
       //   return MaterialPageRoute(
       //       builder: (context) => );
 
+      case Routes.notificationsScreenRoute:
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => GetLocalNotificationsCubit(),
+                    ),
+                  ],
+                  child: NotificationScreen(),
+                ));
       case Routes.signUpRoute:
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(

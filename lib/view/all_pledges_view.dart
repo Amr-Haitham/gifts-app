@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,7 @@ class _PledgedByMeScreenState extends State<PledgedByMeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pledged by Me',
+          'My pledges',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.black,
@@ -70,7 +72,7 @@ class _PledgedByMeScreenState extends State<PledgedByMeScreen> {
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundImage:
-                        NetworkImage(pledge.gift.imageUrl ?? "url"),
+                        MemoryImage(base64Decode(pledge.gift.imageUrl!)),
                     radius: 25.0,
                   ),
                   title: Text(

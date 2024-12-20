@@ -8,11 +8,8 @@ class AuthWrapper extends StatefulWidget {
   final Widget homeScreen;
   final Widget signInScreen;
 
-  const AuthWrapper({
-    super.key,
-    required this.homeScreen,
-    required this.signInScreen
-  });
+  const AuthWrapper(
+      {super.key, required this.homeScreen, required this.signInScreen});
   @override
   State<AuthWrapper> createState() => _AuthWrapperState();
 }

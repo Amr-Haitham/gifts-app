@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gifts_app/constants/app_router.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gifts_app/controller/custom_users/update_fcm_token_for_app_user/update_fcm_token_for_app_user_cubit.dart';
+import 'package:gifts_app/model/sink/local_db.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -11,8 +13,17 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // FirebaseAuth.instance.signOut();
-
-  runApp(const MyApp());
+  // generateLocalDbData();
+  FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: 'amrofficialacc@gmail.com', password: '123456');
+  // await FirebaseAuth.instance.signOut();
+  // await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //     email: 'G5MfE@example.com', password: '12345678');
+  
+  runApp(BlocProvider(
+    create: (context) => UpdateFcmTokenForAppUserCubit(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,10 +47,10 @@ class MyApp extends StatelessWidget {
         cardColor: const Color(0xFF1E1E1E),
         dividerColor: const Color(0xFF272727),
         textTheme: const TextTheme(
-            bodyMedium: TextStyle(color: Colors.white70),
-            bodyLarge: TextStyle(color: Colors.white54),
-            headlineMedium: TextStyle(color: Colors.white),
-            ),
+          bodyMedium: TextStyle(color: Colors.white70),
+          bodyLarge: TextStyle(color: Colors.white54),
+          headlineMedium: TextStyle(color: Colors.white),
+        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF1F1F1F),
           iconTheme: IconThemeData(color: Colors.white),

@@ -73,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             if (state is SetCustomUserLoaded) {
               Navigator.pushNamedAndRemoveUntil(context, Routes.authWrapper,
                   ModalRoute.withName(Routes.authWrapper));
-            } else {
+            } else if (state is SetCustomUserError) {
               showErrorSnackBar(context, "Error adding user");
             }
           },
@@ -83,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             if (state is AuthenticationOpLoaded) {
               BlocProvider.of<SetCustomUserCubit>(context).setCustomUser(
                 CustomUser(
-                  imageUrl: "default_image_url",
+                  imageUrl: randomAssetImageLink(),
                   id: state.userCredential.user!.uid,
                   joinDate: DateTime.now(),
                   name: nameController.text,

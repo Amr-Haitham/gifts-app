@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import '../../model/classes/friend.dart';
 import '../../model/sink/friendship_sink.dart';
-
 
 class GetAllFriendsUseCase {
   final FriendshipSink _friendshipSink;
 
   GetAllFriendsUseCase(this._friendshipSink);
 
-  Future<List<Friend>> execute() async {
+  Future<List<Friend>> execute({required String uid}) async {
     try {
-      return await _friendshipSink.getAllFriends();
+      return await _friendshipSink.getAllFriends(uid: uid);
     } catch (e) {
       throw Exception("Failed to get all friends");
     }
@@ -21,12 +21,14 @@ class GetAllFriendsUseCase {
 class GetAllFriendsCubit extends Cubit<GetAllFriendsState> {
   final GetAllFriendsUseCase _getAllFriendsUseCase;
 
-  GetAllFriendsCubit(this._getAllFriendsUseCase) : super(GetAllFriendsInitial());
+  GetAllFriendsCubit(this._getAllFriendsUseCase)
+      : super(GetAllFriendsInitial());
 
   void getAllFriends() async {
     emit(GetAllFriendsLoading());
     try {
-      List<Friend> friends = await _getAllFriendsUseCase.execute();
+      List<Friend> friends = await _getAllFriendsUseCase.execute(
+          uid: FirebaseAuth.instance.currentUser!.uid);
       emit(GetAllFriendsLoaded(friends: friends));
     } catch (e) {
       emit(GetAllFriendsError());

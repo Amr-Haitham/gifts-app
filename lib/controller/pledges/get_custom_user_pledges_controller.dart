@@ -12,7 +12,6 @@ import '../../model/sink/gifts_sink.dart';
 import '../../model/sink/notifications_sink.dart';
 import '../../model/sink/pledges_sink.dart';
 
-
 class CommitmentUseCase {
   final PledgesSink _pledgesSink = PledgesSink();
   final NotificationsSink _notificationsSink = NotificationsSink();
@@ -23,8 +22,8 @@ class CommitmentUseCase {
       userId: pledge.giftOwnerId,
       notification: Notification(
         id: const Uuid().v4(),
-        title: 'New Commitment!',
-        body: 'You have a new commitment',
+        title: 'New Pledge!',
+        body: 'You have a new pledge by user with id: ${pledge.userId}',
         createdAt: DateTime.now(),
       ),
     );
@@ -36,15 +35,18 @@ class UserPledgesUseCase {
   final GiftsSink _giftsSink = GiftsSink();
   final CustomUserSink _customUserSink = CustomUserSink();
 
-  Future<List<PledgeActualDataEntity>> fetchUserPledges({required String userId}) async {
+  Future<List<PledgeActualDataEntity>> fetchUserPledges(
+      {required String userId}) async {
     List<PledgeActualDataEntity> pledges = [];
     final pledgesDocs = await _pledgesSink.getAllPledgesForUser(userId: userId);
 
     for (var pledgeDoc in pledgesDocs.docs) {
       final pledge = Pledge.fromJson(pledgeDoc.data());
-      final appUser = await _customUserSink.getSingleCustomUser(pledge.giftOwnerId);
+      final appUser =
+          await _customUserSink.getSingleCustomUser(pledge.giftOwnerId);
       final gift = await _giftsSink.getSinglegift(giftId: pledge.giftId);
-      pledges.add(PledgeActualDataEntity(pledge: pledge, giftOwner: appUser, gift: gift));
+      pledges.add(PledgeActualDataEntity(
+          pledge: pledge, giftOwner: appUser, gift: gift));
     }
 
     return pledges;
@@ -56,7 +58,8 @@ class PledgeActualDataEntity {
   final CustomUser giftOwner;
   final Gift gift;
 
-  PledgeActualDataEntity({required this.pledge, required this.giftOwner, required this.gift});
+  PledgeActualDataEntity(
+      {required this.pledge, required this.giftOwner, required this.gift});
 }
 
 class CommitmentCubit extends Cubit<CommitmentState> {

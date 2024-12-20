@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,4 +34,9 @@ void showErrorSnackBar(BuildContext context, String message) {
       duration: const Duration(seconds: 2),
     ),
   );
+}
+
+randomAssetImageLink() {
+  final imageName = '${Random().nextInt(8) + 1}.jpeg';
+  return 'assets/images/$imageName';
 }

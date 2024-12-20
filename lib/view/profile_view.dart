@@ -12,8 +12,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late CustomUser appUser;
-
   @override
   void initState() {
     super.initState();
@@ -23,67 +21,112 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: Container(
-        color: Colors.black,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 20),
-                BlocBuilder<GetAppUserCubit, GetAppUserState>(
-                  builder: (context, state) {
-                    if (state is GetAppUserLoaded) {
-                      return ProfileHeader(
-                        appUser: state.appUser,
-                      );
-                    } else if (state is GetAppUserError) {
-                      return const Text(
-                        'Error',
-                        style: TextStyle(color: Colors.white),
-                      );
-                    }
-                    return const CircularProgressIndicator(
-                      color: Colors.white,
-                    );
-                  },
+    return Drawer(
+      child: ListView(children: [
+        const SizedBox(height: 20),
+        BlocBuilder<GetAppUserCubit, GetAppUserState>(
+          builder: (context, state) {
+            if (state is GetAppUserLoaded) {
+              return ProfileHeader(
+                appUser: state.appUser,
+              );
+            } else if (state is GetAppUserError) {
+              return Center(
+                child: const Text(
+                  'Error',
+                  style: TextStyle(color: Colors.white),
                 ),
-                const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    RedButton(
-                        label: "My Events",
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, Routes.myEventsScreenRoute);
-                        }),
-                    RedButton(
-                        label: "Pledged by Me",
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, Routes.pledgedByMeScreenRoute);
-                        }),
-                  ],
-                ),
-              ],
-            ),
-            // const Padding(
-            //   padding: EdgeInsets.symmetric(vertical: 20.0),
-            //   child: LogoutButton(),
-            // ),
-          ],
+              );
+            }
+            return Center(
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          },
         ),
-      ),
+        ListTile(
+          trailing: Icon(Icons.arrow_right, color: Colors.white),
+          title: const Text('My Events'),
+          onTap: () {
+            Navigator.pushNamed(context, Routes.myEventsScreenRoute);
+            // Navigator.pop(context);
+          },
+        ),
+        GestureDetector(
+          onTap: () {
+            // Navigator.pop(context);
+          },
+          child: ListTile(
+              trailing: Icon(Icons.arrow_right, color: Colors.white),
+              title: const Text('My pledges'),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.pledgedByMeScreenRoute);
+              }),
+        )
+      ]),
     );
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     elevation: 0,
+    //     backgroundColor: Colors.black,
+    //     iconTheme: const IconThemeData(color: Colors.white),
+    //   ),
+    //   body: Container(
+    //     color: Colors.black,
+    //     width: double.infinity,
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: [
+    //         Column(
+    //           children: [
+    //             const SizedBox(height: 20),
+    //             BlocBuilder<GetAppUserCubit, GetAppUserState>(
+    //               builder: (context, state) {
+    //                 if (state is GetAppUserLoaded) {
+    //                   return ProfileHeader(
+    //                     appUser: state.appUser,
+    //                   );
+    //                 } else if (state is GetAppUserError) {
+    //                   return const Text(
+    //                     'Error',
+    //                     style: TextStyle(color: Colors.white),
+    //                   );
+    //                 }
+    //                 return const CircularProgressIndicator(
+    //                   color: Colors.white,
+    //                 );
+    //               },
+    //             ),
+    //             const SizedBox(height: 40),
+    //             Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //               children: [
+    //                 RedButton(
+    //                     label: "My Events",
+    //                     onPressed: () {
+    //                       Navigator.pushNamed(
+    //                           context, Routes.myEventsScreenRoute);
+    //                     }),
+    //                 RedButton(
+    //                     label: "My pledges",
+    //                     onPressed: () {
+    //                       Navigator.pushNamed(
+    //                           context, Routes.pledgedByMeScreenRoute);
+    //                     }),
+    //               ],
+    //             ),
+    //           ],
+    //         ),
+    //         // const Padding(
+    //         //   padding: EdgeInsets.symmetric(vertical: 20.0),
+    //         //   child: LogoutButton(),
+    //         // ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -93,24 +136,27 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 100,
-          backgroundColor: Colors.transparent,
-          backgroundImage: const AssetImage("assets/images/man.jpeg"),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          appUser.name,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.transparent,
+            backgroundImage: AssetImage(appUser.imageUrl!),
           ),
-        ),
-      ],
+          const SizedBox(width: 12),
+          Text(
+            appUser.name,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

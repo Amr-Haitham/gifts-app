@@ -75,6 +75,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                           itemCount: users.length,
                           itemBuilder: (context, index) {
                             var user = users[index];
+                            print(friends);
                             bool isFriend = friends
                                 .any((friend) => friend.friendId == user.id);
 
@@ -138,7 +139,7 @@ class UserCard extends StatelessWidget {
             children: [
               // User Image or Default Avatar
               CircleAvatar(
-                backgroundImage: NetworkImage(
+                backgroundImage: AssetImage(
                     user.imageUrl ?? 'https://via.placeholder.com/150'),
                 radius: 30,
                 backgroundColor: Colors.grey,
